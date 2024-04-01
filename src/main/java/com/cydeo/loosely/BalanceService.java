@@ -1,38 +1,17 @@
 package com.cydeo.loosely;
 
-import com.cydeo.tightly.CustomerBalance;
-import com.cydeo.tightly.GiftCardBalance;
-
 import java.math.BigDecimal;
 
 public class BalanceService {
 
-    Balance customerBalance;
-    Balance giftCardBalance;
+    public boolean checkout(Balance balance, BigDecimal checkoutAmount){
 
-    public BalanceService(Balance customerBalance, Balance giftCardBalance) {
-        this.customerBalance = customerBalance;
-        this.giftCardBalance = giftCardBalance;
-    }
+        BigDecimal balanceAmount = balance.getAmount();//100
+        BigDecimal subtracted = balanceAmount.subtract(checkoutAmount);//40
 
-    public boolean checkoutFromCustomerBalance(BigDecimal checkoutAmount) {
-
-        BigDecimal customerBalanceAmount = this.customerBalance.getAmount();
-
-        if (customerBalanceAmount.subtract(checkoutAmount).compareTo(BigDecimal.ZERO) >= 0) {
-            this.customerBalance.setAmount(customerBalanceAmount.subtract(checkoutAmount));
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean checkoutFromGiftCardBalance(BigDecimal checkoutAmount) {
-
-        BigDecimal giftCardBalanceAmount = this.giftCardBalance.getAmount();
-
-        if (giftCardBalanceAmount.subtract(checkoutAmount).compareTo(BigDecimal.ZERO) >= 0) {
-            this.giftCardBalance.setAmount(giftCardBalanceAmount.subtract(checkoutAmount));
+        //if we have enough money to checkout(subtracted>=0), proceed and return true, if not return false.
+        if(subtracted.compareTo(BigDecimal.ZERO) >=0){
+            balance.setAmount(subtracted);
             return true;
         }
 
